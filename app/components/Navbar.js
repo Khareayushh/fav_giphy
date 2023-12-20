@@ -27,7 +27,7 @@ const Navbar = () => {
 
   console.log(user);
   return (
-    <div className="flex justify-between items-center py-4 px-12">
+    <div className="flex justify-between items-center py-4 px-12 bg-[#fff] mb-8">
       <Link href="/" className="text-2xl font-sans font-bold">
         favGiphy
       </Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
         </ul>
       ) : (
         <div className="px-4 flex items-center gap-4">
-          <p className="text-center">Welcome, {user.email}</p>
+          <p className="text-center font-semibold text-base">Hello👋, {user.email}</p>
           <p onClick={() => location.reload()} className="cursor-pointer font-semibold bg-black text-white px-2 py-1 rounded-lg">
             Home
           </p>
