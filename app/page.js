@@ -1,11 +1,24 @@
 "use client";
 import { TextField } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
-import SearchIcon from '@mui/icons-material/Search';
+import React, { useEffect, useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  collection,
+  getDocs,
+  query,
+  querySnapshot,
+  onSnapshot,
+} from "firebase/firestore";
+import { db } from "./firebase";
+import { UserAuth } from "./context/AuthContext";
+import { CloseFullscreen } from "@mui/icons-material";
 
 export default function Home() {
   const RESULTS_PER_PAGE = 6;
+
+  const { user } = UserAuth();
+  const [favoriteItems, setFavoriteItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(null);
@@ -40,11 +53,33 @@ export default function Home() {
     { length: totalPages },
     (_, index) => index + 1
   );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        try {
+          const querySnapshot = await getDocs(collection(db, "favoritegiphs"));
+          const favorites = [];
+          querySnapshot.forEach((doc) => {
+            favorites.push(doc.data());
+          });
+          setFavoriteItems(favorites);
+        } catch (error) {
+          console.error("Error fetching favorites:", error.message);
+        }
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  console.log(favoriteItems);
+
   return (
     <>
       <div className="bg-white max-w-5xl m-auto py-2 rounded-xl">
         <div className="flex align-center justify-between h-12 search m-6">
-          <SearchIcon className="absolute top mt-3 ml-2"/>
+          <SearchIcon className="absolute top mt-3 ml-2" />
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-4 pl-10 w-full bg-[#F2F4F8] rounded-xl font-semibold"
@@ -58,6 +93,33 @@ export default function Home() {
             {isLoading ? "Searching..." : "Search"}
           </button>
         </div>
+
+        {/* Read favorite items from database of user with specific userId. */}
+
+        {!displayedResults && favoriteItems && user && (
+          <div className="favorite m-6">
+            <p className="text-lg font-semibold">Favorites⭐️</p>
+            <ul className="grid grid-cols-3 masonry-container">
+              {favoriteItems.map((result) => (
+                <li
+                  className="masonry-item flex flex-col justify-start align-start p-4"
+                  key={result.giphy_id}
+                >
+                  <img
+                    src={result.gif_url}
+                    alt={result.name}
+                  />
+                  <div className="mt-2">
+                    <p className="font-semibold text-lg">{result.name}</p>
+                    {result.upload_by && (
+                      <p className="text-sm">@{result.upload_by}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {displayedResults && (
           <div>
@@ -82,7 +144,6 @@ export default function Home() {
             </ul>
           </div>
         )}
-
         {searchResults && (
           <div className="flex justify-center align-items">
             <div>

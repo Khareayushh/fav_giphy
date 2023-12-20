@@ -36,14 +36,19 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+
   const logout = async () => {
-    // Sign out user with Firebase and reset user state
-    await auth.signOut();
-    setUser(null);
+    try {
+      // Sign out user with Firebase and reset user state
+      await auth.signOut();
+      setUser(null);
+    } catch (error) {
+      console.error('Error during logout:', error.message);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, signup, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );

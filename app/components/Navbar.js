@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { user, logout } = UserAuth();
+  const { user, logout, setUser } = UserAuth();
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
@@ -43,7 +43,7 @@ const Navbar = () => {
           </Link>
         </div>
       )} */}
-      {loading ? null : !user ? (
+      {loading ? (<div class="loader"></div>) : !user ? (
         <ul className="flex gap-4">
           <li onClick={() => router.push('/login')} className="cursor-pointer font-semibold bg-black text-white px-2 rounded-lg">
             Login
