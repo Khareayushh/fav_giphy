@@ -37,7 +37,11 @@ export default function Home() {
   const handleSearch = async () => {
     try {
       setIsLoading(true);
-      if (searchTerm.length === 0) return;
+      if (searchTerm.length === 0) {
+        setSearchResults(null);
+        setIsLoading(false);
+        return;
+      }
       const apiKey = "GlVGYHkr3WSBnllca54iNt0yFbjz7L65";
       const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchTerm}`;
       const response = await fetch(url);
@@ -86,7 +90,7 @@ export default function Home() {
       console.error("Error adding to favorites:", error.message);
     }
   };
-  
+
   console.log(searchResults);
   const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
   const endIndex = startIndex + RESULTS_PER_PAGE;
@@ -138,7 +142,10 @@ export default function Home() {
         <div className="flex align-center justify-between h-12 search m-6">
           <SearchIcon className="absolute top mt-3 ml-2" />
           <input
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              handleSearch(); // Trigger search on each change
+            }}
             className="p-4 pl-10 w-full bg-[#F2F4F8] rounded-xl font-semibold"
             type="text"
             placeholder="Search gif"

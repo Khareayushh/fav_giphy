@@ -3,7 +3,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div className="py-6 flex justify-center align-center">
+    <div className="py-6 flex justify-center align-center bg-[#fff] mt-8">
       <p>Copyright 2023 <span className="font-semibold"><Link href="https://github.com/Khareayushh">@khareayushh</Link></span></p>
     </div>
   )
