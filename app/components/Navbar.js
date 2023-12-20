@@ -45,6 +45,9 @@ const Navbar = () => {
       )} */}
       {loading ? (<div class="loader"></div>) : !user ? (
         <ul className="flex gap-4">
+          <li onClick={() => location.reload()} className="cursor-pointer font-semibold bg-black text-white px-2 rounded-lg">
+            Home
+          </li>
           <li onClick={() => router.push('/login')} className="cursor-pointer font-semibold bg-black text-white px-2 rounded-lg">
             Login
           </li>
@@ -55,6 +58,9 @@ const Navbar = () => {
       ) : (
         <div className="px-4 flex items-center gap-4">
           <p className="text-center">Welcome, {user.email}</p>
+          <p onClick={() => location.reload()} className="cursor-pointer font-semibold bg-black text-white px-2 py-1 rounded-lg">
+            Home
+          </p>
           <p className="cursor-pointer font-semibold bg-black text-white px-2 py-1 rounded-lg" onClick={handleSignOut}>
             Sign out
           </p>
