@@ -42,7 +42,7 @@ export default function Home() {
         setIsLoading(false);
         return;
       }
-      const apiKey = "GlVGYHkr3WSBnllca54iNt0yFbjz7L65";
+      const apiKey = process.env.NEXT_PUBLIC_GIPHY_API;
       const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchTerm}`;
       const response = await fetch(url);
       const dataFromApi = await response.json();

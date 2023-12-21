@@ -8,6 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -16,11 +17,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
       // Redirect to dashboard
       router.push("/");
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,15 +58,23 @@ const Login = () => {
             required
           />
         </div>
-        {error && <p className="my-1" style={{ color: "red" }}>{error}</p>}
-        <button className="w-full bg-black text-white font-semibold text-lg rounded-lg mt-6" type="submit">Login</button>
+        <div className="flex items-center justify-center mt-2">{isLoading && <div className="loader "></div>}</div>
+        {error && (
+          <p className="my-1 " style={{ color: "red" }}>
+            {error}
+          </p>
+        )}
+
+        <button
+          className="w-full bg-black text-white font-semibold text-lg rounded-lg mt-6"
+          type="submit"
+        >
+          Login
+        </button>
       </form>
       <p className="p-2">
         Don't have an account?{" "}
-        <Link
-          href="/signup"
-          className="cursor-pointer font-semibold"
-        >
+        <Link href="/signup" className="cursor-pointer font-semibold">
           Sign Up
         </Link>
       </p>
