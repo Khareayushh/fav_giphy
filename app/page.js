@@ -79,7 +79,7 @@ export default function Home() {
       await setDoc(docRef, {
         composite_key: compositeKey, // Include the composite key in the document data
         giphy_id: image.id,
-        gif_url: image.images.downsized_medium.url,
+        gif_url: image.images.fixed_height_downsampled.url,
         name: image.title,
         upload_by: image.username || "",
         user_id: user.uid,
@@ -148,7 +148,7 @@ export default function Home() {
             }}
             className="p-4 pl-10 w-full bg-[#F2F4F8] rounded-xl font-semibold"
             type="text"
-            placeholder="Search gif"
+            placeholder="Article name or keywords..."
           ></input>
           <button
             onClick={handleSearch}
@@ -163,6 +163,13 @@ export default function Home() {
         {isLoading && (
           <div className="flex absolute top-1/2 left-1/2 items-center justify-center">
             <div class="loader "></div>
+          </div>
+        )}
+
+        {!user && !displayedResults && (
+          <div className="favorite m-6">
+            <p className="text-lg font-semibold">Favorites⭐️</p>
+            <p>Login or Signup for using this feature</p>
           </div>
         )}
 
@@ -196,7 +203,7 @@ export default function Home() {
 
         {displayedResults && !isLoading && (
           <div>
-            <ul className="grid grid-cols-3 masonry-container">
+            <ul className="grid grid-cols-3 masonry-container ml-2 mr-6">
               {displayedResults.map((result) => (
                 <GiphyItem
                   key={result.id}
