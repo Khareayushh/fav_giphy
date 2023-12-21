@@ -13,11 +13,11 @@ const GiphyItem = ({ image, onAddToFavorites }) => {
   const { user } = UserAuth();
   return (
     <li className="masonry-item flex flex-col justify-start align-start p-4">
-      <img src={image.images.downsized_medium.url} alt={image.title} />
+      <img src={image.images.fixed_height_still.url} alt={image.title} />
       <div className="flex items-start justify-between">
         <div className="mt-2">
           <p className="font-semibold text-base">{image.title}</p>
-          {image.username && <p className="text-sm">@{image.username}</p>}
+          {image.username && <p className="text-sm text-[#999FAA]">@{image.username}</p>}
         </div>
         {/* Toggle between StarIcon and StarBorderIcon based on isSelected */}
         {user && (
