@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Island_Moments } from "next/font/google";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const auth = getAuth();
@@ -15,11 +17,15 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true)
       await createUserWithEmailAndPassword(auth, email, password);
       // Redirect to login page or dashboard
       router.push("/");
     } catch (error) {
       setError(error.message);
+    }
+    finally{
+      setIsLoading(false);
     }
   };
 
@@ -53,6 +59,8 @@ const SignUp = () => {
             required
           />
         </div>
+        <div className="flex items-center justify-center mt-2">{isLoading && <div className="loader "></div>}</div>
+
         {error && (
           <p className="my-1" style={{ color: "red" }}>
             {error}
